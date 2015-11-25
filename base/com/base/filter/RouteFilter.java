@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import com.base.utils.AppConfig;
 import com.base.utils.CharsetUtils;
 import com.base.utils.CoreMap;
+import com.base.utils.RequestUtils;
 
 import freemarker.ext.servlet.HttpSessionHashModel;
 import freemarker.template.Configuration;
@@ -90,13 +91,14 @@ public class RouteFilter implements Filter {
 
 		String reqUri = request.getRequestURI();
 		CoreMap outMap = new CoreMap();
-
+		System.out.println(reqUri);
 		if (reqUri.startsWith("/assets")) {
 			chain.doFilter(request, response);
 			return;
 		}
 
 		try {
+			CoreMap inMap = RequestUtils.getInMap(request);
 			Template temp = this.cfg.getTemplate("admin.ftl");
 			Writer out = response.getWriter();
 			try {

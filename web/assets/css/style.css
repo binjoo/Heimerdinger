@@ -9,7 +9,9 @@ body {
 html, body {
     height: 100%;
 }
-
+.mt20 {
+    margin-top: 20px;
+}
 #wrap .col-md-3, #wrap .col-md-9{
     -webkit-transition:all 1s;
     -moz-transition:all 1s;
@@ -26,6 +28,8 @@ html, body {
 	height: 68px;
 }
 .side-header{
+    color:#fff;
+	padding-left: 25px;
     background:#4f827c;
 }
 .side-body{
@@ -38,14 +42,21 @@ html, body {
 .side-body .ctrl .btn{
     padding:5px 15px;
 }
+.side-body .setting {
+    padding: 25px;
+}
+.side-body .setting h3 {
+    margin: 0px;
+}
+
 .main-header{
-    background:#7fbfae;
+    background:#7fb5ae;
     margin-left: -30px;
     padding-left: 30px;
 }
 .main-header h3{
     color:#fff;
-    font-size:32px;
+    font-size:28px;
 }
 .save-ctrl {
     margin-top: 15px;
@@ -71,16 +82,42 @@ html, body {
     background-image: linear-gradient(to bottom,#fff 0%,#fff 25%,rgba(255,255,255,0.9) 100%);
 }
 .entry-markdown-content, .entry-preview-content {
-    padding: 55px 0 25px 0;
+    padding-bottom: 25px;
 }
 .entry-markdown-content .CodeMirror {
-    background: white;
-    color: #3c4043;
-    color: black;
     font-family: Inconsolata,monospace;
     font-size: 1.1em;
     line-height: 1.3em;
-    line-height: 1;
-    overflow: hidden;
-    position: relative;
+    color: #3c4043;
+}
+.entry-markdown-content .CodeMirror .CodeMirror-focused,.entry-markdown-content .CodeMirror .CodeMirror-selected {
+    color: #242628;
+    background: #b3d5f3;
+    text-shadow: none;
+}
+.entry-markdown-content .CodeMirror ::selection {
+    color: #242628;
+    background: #b3d5f3;
+    text-shadow: none;
+}
+.entry-markdown-content .CodeMirror-lines,.entry-preview-content {
+    padding: 55px 0 25px 0;
+}
+.entry-preview-content{
+    overflow: auto;
+    font-size: 1.2em;
+    line-height: 1.4em;
+}
+.entry-markdown-content .cm-header {
+    color: #000;
+    font-size: 1.4em;
+    line-height: 1.4em;
+    font-weight: bold;
+}
+.entry-markdown-content .cm-variable-2,.entry-markdown-content .cm-variable-3,.entry-markdown-content .cm-keyword {
+    color: #3c4043;
+}
+.entry-markdown-content .cm-string,.entry-markdown-content .cm-strong,.entry-markdown-content .cm-link,.entry-markdown-content .cm-comment,.entry-markdown-content .cm-quote,.entry-markdown-content .cm-number,.entry-markdown-content .cm-atom,.entry-markdown-content .cm-tag {
+    color: #000;
+    font-weight: bold;
 }

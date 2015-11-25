@@ -11,24 +11,37 @@
 <link rel="stylesheet" type="text/css" href="/assets/css/codemirror.css">
 <script type="text/javascript" src="/assets/js/jquery.min.js?ver=1.9.1"></script>
 <script type="text/javascript" src="/assets/js/bootstrap.min.js?ver=3.3.5"></script>
+<script type="text/javascript" src="/assets/js/xss.js"></script>
 <script type="text/javascript" src="/assets/js/codemirror.js"></script>
 <script type="text/javascript" src="/assets/js/markdown.js"></script>
+<script type="text/javascript" src="/assets/js/showdown.min.js?ver=1.3.0"></script>
 <script type="text/javascript" src="/assets/js/base.js"></script>
 </head>
 <body>
 <div id="wrap" class="side-open">
 	<div class="row">
 		<div class="col-md-3">
-			<div class="side-header"></div>
-			<div class="side-body" style="overflow: auto; height: 236px;">1</div>
+			<div class="side-header"><h3 class="pull-left">Heimerdinger Resume v0.1</h3></div>
+			<div class="side-body" style="overflow: auto; height: 100%;">
+				<div class="setting">
+					<h3>简历设置</h3>
+					<input type="text" class="form-control mt20" name="title" placeholder="简历标题">
+					<input type="text" class="form-control mt20" name="subtitle" placeholder="简历子标题，可空">
+					<input type="text" class="form-control mt20" name="password" placeholder="阅读密码，可空">
+					<div class="mt20 form-inline">
+						<input type="checkbox" class="checkbox">  开启「 扫码求简历 」
+					</div>
+				</div>
+			</div>
+			<!-- /side-body -->
 		</div>
 		<!-- /col-md-3 -->
 		<div class="col-md-9">
 			<div class="main-header">
-				<h3 class="pull-left">Heimerdinger</h3>
+				<h3 class="pull-left"></h3>
 				<div class="pull-right save-ctrl">
-					<button type="button" class="btn btn-default">预览</button>
-					<button type="button" class="btn btn-default">保存</button>
+					<button type="button" class="btn btn-default" onclick="pageObj.preview()">预览</button>
+					<button type="button" class="btn btn-default" onclick="pageObj.save()">保存</button>
 				</div>
 			</div>
 			<!-- /main-header -->
@@ -47,6 +60,7 @@
 						<small>Preview</small>
 					</header>
 					<section class="entry-preview-content">
+						<div class="rendered-markdown"></div>
 					</section>
 				</section>
 				<!-- /entry-preview -->
