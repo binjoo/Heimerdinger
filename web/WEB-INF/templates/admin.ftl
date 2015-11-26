@@ -25,11 +25,13 @@
 			<div class="side-body" style="overflow: auto; height: 100%;">
 				<div class="setting">
 					<h3>简历设置</h3>
-					<input type="text" class="form-control mt20" name="title" placeholder="简历标题">
-					<input type="text" class="form-control mt20" name="subtitle" placeholder="简历子标题，可空">
-					<input type="text" class="form-control mt20" name="password" placeholder="阅读密码，可空">
+					<input type="text" class="form-control mt20" name="title" placeholder="简历标题" value="${title?if_exists}" />
+					<input type="text" class="form-control mt20" name="subtitle" placeholder="简历子标题，可空" value="${subtitle?if_exists}" />
+					<input type="text" class="form-control mt20" name="password" placeholder="阅读密码，可空" value="${password?if_exists}" />
 					<div class="mt20 form-inline">
-						<input type="checkbox" class="checkbox">  开启「 扫码求简历 」
+						<label>
+							<input type="checkbox" class="checkbox">  开启「 扫码求简历 」
+						</label>
 					</div>
 				</div>
 			</div>
