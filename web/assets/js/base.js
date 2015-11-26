@@ -33,7 +33,8 @@ pageObj.save = function(){
 	$.post("/admin?action=save",
 		pageObj.getData(),
 		function(data){
-			alert(data);
+			$(".main-header .message").stop().html(data.message).removeClass().addClass("pull-left message " + data.result);
+			$(".main-header .message").fadeIn(300).delay(3000).fadeOut(600);
 		}
 	);
 }

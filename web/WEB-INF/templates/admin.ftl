@@ -38,7 +38,7 @@
 		<!-- /col-md-3 -->
 		<div class="col-md-9">
 			<div class="main-header">
-				<h3 class="pull-left"></h3>
+				<div class="pull-left message success" style="display: none"></div>
 				<div class="pull-right save-ctrl">
 					<button type="button" class="btn btn-default" onclick="pageObj.preview()">预览</button>
 					<button type="button" class="btn btn-default" onclick="pageObj.save()">保存</button>

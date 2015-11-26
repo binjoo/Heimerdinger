@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -18,11 +16,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.base.utils.AppConfig;
+import com.base.action.CoreAction;
 import com.base.utils.CharsetUtils;
+import com.base.utils.Constants;
 import com.base.utils.CoreMap;
 import com.base.utils.RequestUtils;
 
@@ -35,7 +36,6 @@ import freemarker.template.TemplateException;
 public class RouteFilter implements Filter {
 	private static final Logger log = Logger.getLogger(RouteFilter.class);
 
-	private List<String> actionPackages = null;
 	private ServletContext context;
 	private Configuration cfg;
 
@@ -58,13 +58,7 @@ public class RouteFilter implements Filter {
 		this.cfg.setClassForTemplateLoading(this.getClass(), "/../templates");
 		this.cfg.setObjectWrapper(new DefaultObjectWrapper());
 
-		/**
-		 * 获得ACTION包
-		 */
-		String packages = cfg.getInitParameter("packages");
-		this.actionPackages = Arrays.asList(StringUtils.split(packages, ','));
-
-		String ignores = cfg.getInitParameter("ignore");
+		String ignores = cfg.getInitParameter("ignoreURIs");
 		if (ignores != null) {
 			for (String ig : StringUtils.split(ignores, ',')) {
 				ignoreURIs.add(ig.trim());
@@ -91,29 +85,66 @@ public class RouteFilter implements Filter {
 
 		String reqUri = request.getRequestURI();
 		CoreMap outMap = new CoreMap();
-		System.out.println(reqUri);
-		if (reqUri.startsWith("/assets")) {
-			chain.doFilter(request, response);
-			return;
+
+		for (String ignoreExt : ignoreExts) {
+			if (reqUri.endsWith(ignoreExt)) {
+				chain.doFilter(request, response);
+				return;
+			}
+		}
+		for (String ignoreURI : ignoreURIs) {
+			if (reqUri.startsWith(ignoreURI)) {
+				chain.doFilter(request, response);
+				return;
+			}
 		}
 
 		try {
-			CoreMap inMap = RequestUtils.getInMap(request);
-			Template temp = this.cfg.getTemplate("admin.ftl");
-			Writer out = response.getWriter();
-			try {
-				CoreMap data = outMap; // 传递数据
-				data.put("request", request);
-				data.put("response", response);
-				data.put("session", new HttpSessionHashModel(request.getSession(), cfg.getObjectWrapper()));
-				data.put("ms", System.currentTimeMillis());
-				
-				temp.process(data, out);
-			} catch (TemplateException e) {
-				e.printStackTrace();
+			String uri = request.getRequestURI();
+			String[] parts = StringUtils.split(uri, "/");
+			if (parts.length < 1) {
+				parts = new String[] { "index" };
 			}
-			out.flush();
-			out.close();
+
+			String cls = "com.resume.action." + StringUtils.capitalize(parts[0]) + "Action";
+				
+			CoreAction action = (CoreAction) Class.forName(cls).newInstance();
+
+			action.setRequest(request);
+			action.setResponse(response);
+			action.setSession(request.getSession(false));
+			
+			Method method = action.getClass().getMethod("action", CoreMap.class);
+			
+			CoreMap inMap = RequestUtils.getInMap(request);
+			outMap = (CoreMap) method.invoke(action, inMap);
+			
+			if(outMap != null){
+				String type = outMap.getOutType();
+				String render = outMap.getOutRender();
+				
+				if (type.equals(Constants.OUT_TYPE__PAGE)) {
+					Template temp = this.cfg.getTemplate(outMap.getOutRender() + ".ftl");
+					Writer out = response.getWriter();
+					try {
+						CoreMap data = outMap; // 传递数据
+						data.put("request", request);
+						data.put("response", response);
+						data.put("session", new HttpSessionHashModel(request.getSession(), cfg.getObjectWrapper()));
+						data.put("ms", System.currentTimeMillis());
+						
+						temp.process(data, out);
+					} catch (TemplateException e) {
+						e.printStackTrace();
+					} finally{
+						out.flush();
+						out.close();
+					}
+				} else if (type.equals(Constants.OUT_TYPE__JSON)) {
+					response.setContentType("text/json; charset=" + CharsetUtils.UTF_8);
+					response.getWriter().print(JSONObject.fromObject(outMap));
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.setStatus(500);

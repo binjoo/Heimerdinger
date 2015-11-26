@@ -58,6 +58,22 @@ html, body {
     color:#fff;
     font-size:28px;
 }
+.main-header .message{
+    margin-top: 15px;
+    font-size: 14px;
+    border-radius: 4px;
+	padding: 6px 12px;
+}
+.main-header .message.success{
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+.main-header .message.danger{
+	color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
 .save-ctrl {
     margin-top: 15px;
     margin-right: 15px;
