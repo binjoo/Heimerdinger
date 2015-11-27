@@ -30,6 +30,7 @@ pageObj.getData = function(){
 	return data;
 }
 pageObj.save = function(){
+alert(pageObj.editor.getValue());
 	$.post("/admin?action=save",
 		pageObj.getData(),
 		function(data){
