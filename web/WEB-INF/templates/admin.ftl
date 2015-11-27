@@ -15,7 +15,7 @@
 <script type="text/javascript" src="/assets/js/codemirror.js"></script>
 <script type="text/javascript" src="/assets/js/markdown.js"></script>
 <script type="text/javascript" src="/assets/js/showdown.min.js?ver=1.3.0"></script>
-<script type="text/javascript" src="/assets/js/base.js"></script>
+<script type="text/javascript" src="/assets/js/admin.js"></script>
 </head>
 <body>
 <div id="wrap" class="side-open">
@@ -53,7 +53,7 @@
 						<small>Markdown</small>
 					</header>
 					<section class="entry-markdown-content">
-						<textarea id="entry-markdown" style="display: none;"></textarea>
+						<textarea id="entry-markdown" style="display: none;">${content?if_exists}</textarea>
 					</section>
 				</section>
 				<!-- /entry-markdown -->
